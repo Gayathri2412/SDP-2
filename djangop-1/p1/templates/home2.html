@@ -1,0 +1,1893 @@
+{% extends 'base2.html' %}
+{% block content%}
+{% load static %}
+{% static "images" as baseUrl %}
+<html class="no-js" lang="zxx">
+<style>
+/*=============== GOOGLE FONTS ===============*/
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@500;600;700&display=swap");
+
+/*=============== VARIABLES CSS ===============*/
+:root {
+  --header-height: 3rem;
+
+  /*========== Colors ==========*/
+  /* Change favorite color to match images */
+  /*Green dark 190 - Green 171 - Grren Blue 200*/
+  --hue-color: 190;
+
+  /* HSL color mode */
+  --first-color: hsl(var(--hue-color), 64%, 22%);
+  --first-color-second: hsl(var(--hue-color), 64%, 22%);
+  --first-color-alt: hsl(var(--hue-color), 64%, 15%);
+  --title-color: hsl(var(--hue-color), 64%, 18%);
+  --text-color: hsl(var(--hue-color), 24%, 35%);
+  --text-color-light: hsl(var(--hue-color), 8%, 60%);
+  --input-color: hsl(var(--hue-color), 24%, 97%);
+  --body-color: hsl(var(--hue-color), 100%, 99%);
+  --white-color: #FFF;
+  --scroll-bar-color: hsl(var(--hue-color), 12%, 90%);
+  --scroll-thumb-color: hsl(var(--hue-color), 12%, 75%);
+
+  /*========== Font and typography ==========*/
+  --body-font: 'Open Sans', sans-serif;
+  --title-font: 'Raleway', sans-serif;
+  --biggest-font-size: 2.5rem;
+  --h1-font-size: 1.5rem;
+  --h2-font-size: 1.25rem;
+  --h3-font-size: 1rem;
+  --normal-font-size: .938rem;
+  --small-font-size: .813rem;
+  --smaller-font-size: .75rem;
+
+  /*========== Font weight ==========*/
+  --font-medium: 500;
+  --font-semi-bold: 600;
+
+  /*========== Margenes Bottom ==========*/
+  --mb-0-25: .25rem;
+  --mb-0-5: .5rem;
+  --mb-0-75: .75rem;
+  --mb-1: 1rem;
+  --mb-1-25: 1.25rem;
+  --mb-1-5: 1.5rem;
+  --mb-2: 2rem;
+  --mb-2-5: 2.5rem;
+
+  /*========== z index ==========*/
+  --z-tooltip: 10;
+  --z-fixed: 100;
+
+  /*========== Hover overlay ==========*/
+  --img-transition: .3s;
+  --img-hidden: hidden;
+  --img-scale: scale(1.1);
+}
+
+@media screen and (min-width: 968px) {
+  :root {
+    --biggest-font-size: 4rem;
+    --h1-font-size: 2.25rem;
+    --h2-font-size: 1.75rem;
+    --h3-font-size: 1.25rem;
+    --normal-font-size: 1rem;
+    --small-font-size: .875rem;
+    --smaller-font-size: .813rem;
+  }
+}
+
+/*========== Variables Dark theme ==========*/
+body.dark-theme {
+  --first-color-second: hsl(var(--hue-color), 54%, 12%);
+  --title-color: hsl(var(--hue-color), 24%, 95%);
+  --text-color: hsl(var(--hue-color), 8%, 75%);
+  --input-color: hsl(var(--hue-color), 29%, 16%);
+  --body-color: hsl(var(--hue-color), 29%, 12%);
+  --scroll-bar-color: hsl(var(--hue-color), 12%, 48%);
+  --scroll-thumb-color: hsl(var(--hue-color), 12%, 36%);
+}
+
+/*========== Button Dark/Light ==========*/
+.nav__dark {
+  display: flex;
+  align-items: center;
+  column-gap: 2rem;
+  position: absolute;
+  left: 3rem;
+  bottom: 4rem;
+}
+
+.change-theme, .change-theme-name {
+  color: var(--text-color);
+}
+
+.change-theme {
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.change-theme-name {
+  font-size: var(--small-font-size);
+}
+
+/*=============== BASE ===============*/
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: var(--header-height) 0 0 0;
+  font-family: var(--body-font);
+  font-size: var(--normal-font-size);
+  background-color: var(--body-color);
+  color: var(--text-color);
+}
+
+h1, h2, h3 {
+  color: var(--title-color);
+  font-weight: var(--font-semi-bold);
+  font-family: var(--title-font);
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input {
+  border: none;
+  font-family: var(--body-font);
+  font-size: var(--normal-font-size);
+}
+
+button {
+  cursor: pointer;
+}
+
+input {
+  outline: none;
+}
+
+.main {
+  overflow-x: hidden;
+}
+
+/*=============== REUSABLE CSS CLASSES ===============*/
+.section {
+  padding: 4.5rem 0 2.5rem;
+}
+
+.section__title {
+  font-size: var(--h2-font-size);
+  color: var(--title-color);
+  text-align: center;
+  text-transform: capitalize;
+  margin-bottom: var(--mb-2);
+}
+
+.container {
+  max-width: 968px;
+  margin-left: var(--mb-1);
+  margin-right: var(--mb-1);
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/*=============== HEADER ===============*/
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-fixed);
+  background-color: transparent;
+}
+
+/*=============== NAV ===============*/
+.nav {
+  height: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav__logo, .nav__toggle {
+  color: var(--white-color);
+}
+
+.nav__logo {
+  font-weight: var(--font-semi-bold);
+}
+
+.nav__toggle {
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.nav__menu {
+  position: relative;
+}
+
+@media screen and (max-width: 767px) {
+  .nav__menu {
+    position: fixed;
+    background-color: var(--body-color);
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100%;
+    box-shadow: -1px 0 4px rgba(14, 55, 63, 0.15);
+    padding: 3rem;
+    transition: .4s;
+  }
+}
+
+.nav__list {
+  display: flex;
+  flex-direction: column;
+  row-gap: 2.5rem;
+}
+
+.nav__link {
+  color: var(--text-color-light);
+  font-weight: var(--font-semi-bold);
+  text-transform: uppercase;
+}
+
+.nav__link:hover {
+  color: var(--text-color);
+}
+
+.nav__close {
+  position: absolute;
+  top: .75rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: var(--title-color);
+  cursor: pointer;
+}
+
+/* show menu */
+.show-menu {
+  right: 0;
+}
+
+/* Change background header */
+.scroll-header {
+  background-color: var(--body-color);
+  box-shadow: 0 0 4px rgba(14, 55, 63, 0.15);
+}
+
+.scroll-header .nav__logo,
+.scroll-header .nav__toggle {
+  color: var(--title-color);
+}
+
+/* Active link */
+.active-link {
+  position: relative;
+  color: var(--title-color);
+}
+
+.active-link::before {
+  content: '';
+  position: absolute;
+  background-color: var(--title-color);
+  width: 100%;
+  height: 2px;
+  bottom: -.75rem;
+  left: 0;
+}
+
+/*=============== HOME ===============*/
+.home__img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  object-position: 83%;
+}
+
+.home__container {
+  position: relative;
+  height: calc(100vh - var(--header-height));
+  align-content: center;
+  row-gap: 3rem;
+}
+
+.home__data-subtitle,
+.home__data-title,
+.home__social-link,
+.home__info {
+  color: var(--white-color);
+}
+
+.home__data-subtitle {
+  display: block;
+  font-weight: var(--font-semi-bold);
+  margin-bottom: var(--mb-0-75);
+}
+
+.home__data-title {
+  font-size: var(--biggest-font-size);
+  font-weight: var(--font-medium);
+  margin-bottom: var(--mb-2-5);
+}
+
+.home__social {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+}
+
+.home__social-link {
+  font-size: 1.2rem;
+  width: max-content;
+}
+
+.home__info {
+  background-color: var(--first-color);
+  display: flex;
+  padding: 1.5rem 1rem;
+  align-items: center;
+  column-gap: .5rem;
+  position: absolute;
+  right: 0;
+  bottom: 1rem;
+  width: 228px;
+}
+
+.home__info-title {
+  display: block;
+  font-size: var(--small-font-size);
+  font-weight: var(--font-semi-bold);
+  margin-bottom: var(--mb-0-75);
+}
+
+.home__info-button {
+  font-size: var(--smaller-font-size);
+}
+
+.home__info-overlay {
+  overflow: var(--img-hidden);
+}
+
+.home__info-img {
+  width: 145px;
+  transition: var(--img-transition);
+}
+
+.home__info-img:hover {
+  transform: var(--img-scale);
+}
+
+/*=============== BUTTONS ===============*/
+.button {
+  display: inline-block;
+  background-color: var(--first-color);
+  color: var(--white-color);
+  padding: 1rem 2rem;
+  font-weight: var(--font-semi-bold);
+  transition: .3s;
+}
+
+.button:hover {
+  background-color: var(--first-color-alt);
+}
+
+.button--flex {
+  display: flex;
+  align-items: center;
+  column-gap: .25rem;
+}
+
+.button--link {
+  background: none;
+  padding: 0;
+}
+
+.button--link:hover {
+  background: none;
+}
+
+/*=============== ABOUT ===============*/
+.about__data {
+  text-align: center;
+}
+
+.about__container {
+  row-gap: 2.5rem;
+}
+
+.about__description {
+  margin-bottom: var(--mb-2);
+}
+
+.about__img {
+  display: flex;
+  column-gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.about__img-overlay {
+  overflow: var(--img-hidden);
+}
+
+.about__img-one {
+  width: 130px;
+}
+
+.about__img-two {
+  width: 180px;
+}
+
+.about__img-one,
+.about__img-two {
+  transition: var(--img-transition);
+}
+
+.about__img-one:hover,
+.about__img-two:hover {
+  transform: var(--img-scale);
+}
+
+/*=============== DISCOVER ===============*/
+.discover__card {
+  position: relative;
+  width: 200px;
+  overflow: var(--img-hidden);
+}
+
+.discover__data {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1rem;
+}
+
+.discover__title,
+.discover__description {
+  color: var(--white-color);
+}
+
+.discover__title {
+  font-size: var(--h3-font-size);
+  margin-bottom: var(--mb-0-25);
+}
+
+.discover__description {
+  display: block;
+  font-size: var(--smaller-font-size);
+}
+
+.discover__img {
+  transition: var(--img-transition);
+}
+
+.discover__img:hover {
+  transform: var(--img-scale);
+}
+
+.swiper-container-3d .swiper-slide-shadow-left,
+.swiper-container-3d .swiper-slide-shadow-right {
+  background-image: none;
+}
+
+/*=============== EXPERIENCE ===============*/
+.experience__container {
+  bottom : 10000px
+  row-gap: 2.5rem;
+  justify-content: center;
+  justify-items: center;
+}
+
+.experience__content {
+
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 1rem;
+  justify-items: center;
+  padding: 0 2rem;
+}
+
+.experience__number {
+
+  font-size: var(--h2-font-size);
+  font-weight: var(--font-semi-bold);
+  margin-bottom: var(--mb-0-5);
+}
+
+.experience__description {
+  font-size: var(--small-font-size);
+}
+
+.experience__img {
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.experience__img-one,
+.experience__img-two {
+  transition: var(--img-transition);
+}
+
+.experience__img-one:hover,
+.experience__img-two:hover {
+  transform: var(--img-scale);
+}
+
+.experience__overlay {
+  overflow: var(--img-hidden);
+}
+
+.experience__overlay:nth-child(1) {
+  width: 263px;
+  margin-right: 2rem;
+}
+
+.experience__overlay:nth-child(2) {
+  width: 120px;
+  position: absolute;
+  top: 2rem;
+  right: 0;
+}
+
+/*=============== VIDEO ===============*/
+.video__container {
+  padding-bottom: 1rem;
+}
+
+.video__description {
+  text-align: center;
+  margin-bottom: var(--mb-2-5);
+}
+
+.video__content {
+  position: relative;
+}
+
+.video__button {
+  position: absolute;
+  right: 1rem;
+  bottom: -1rem;
+  padding: 1rem 1.5rem;
+}
+
+.video__button-icon {
+  font-size: 1.2rem;
+}
+
+/*=============== PLACES ===============*/
+.place__card, .place__img {
+  height: 230px;
+}
+
+.place__container {
+  grid-template-columns: repeat(2, max-content);
+  justify-content: center;
+}
+
+.place__card {
+  position: relative;
+  overflow: var(--img-hidden);
+}
+
+.place__card:hover .place__img {
+  transform: var(--img-scale);
+}
+
+.place__img {
+  transition: var(--img-transition);
+}
+
+.place__content, .place__title {
+  color: var(--white-color);
+}
+
+.place__content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: .75rem .75rem 1rem;
+}
+
+.place__rating {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+}
+
+.place__rating-icon {
+  font-size: .75rem;
+  margin-right: var(--mb-0-25);
+}
+
+.place__rating-number {
+  font-size: var(--small-font-size);
+}
+
+.place__subtitle, .place__price {
+  display: block;
+}
+
+.place__title {
+  font-size: var(--h3-font-size);
+  margin-bottom: var(--mb-0-25);
+}
+
+.place__subtitle {
+  font-size: var(--smaller-font-size);
+  margin-bottom: var(--mb-1-25);
+}
+
+.place__button {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: .75rem 1rem;
+}
+
+/*=============== SUBSCRIBE ===============*/
+.subscribe__bg {
+  background-color: var(--first-color-second);
+  padding: 2.5rem 0;
+}
+
+.subscribe__title,
+.subscribe__description {
+  color: var(--white-color);
+}
+
+.subscribe__description {
+  text-align: center;
+  margin-bottom: var(--mb-2-5);
+}
+
+.subscribe__form {
+  background-color: var(--input-color);
+  padding: .5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.subscribe__input {
+  width: 70%;
+  padding-right: .5rem;
+  background-color: var(--input-color);
+  color: var(--text-color);
+}
+
+.subscribe__input::placeholder {
+  color: var(--text-color);
+}
+
+/*=============== SPONSORS ===============*/
+.sponsor__container {
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  justify-items: center;
+  row-gap: 3.5rem;
+}
+
+.sponsor__content:hover .sponsor__img {
+  filter: invert(0.5);
+}
+
+.sponsor__img {
+  width: 90px;
+  filter: invert(0.7);
+  transition: var(--img-transition);
+}
+
+/*=============== FOOTER ===============*/
+.footer__container {
+  row-gap: 5rem;
+}
+
+.footer__content {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  row-gap: 2rem;
+}
+
+.footer__title,
+.footer__subtitle {
+  font-size: var(--h3-font-size);
+}
+
+.footer__title {
+  margin-bottom: var(--mb-0-5);
+}
+
+.footer__description {
+  margin-bottom: var(--mb-2);
+}
+
+.footer__social {
+  font-size: 1.25rem;
+  color: var(--title-color);
+  margin-right: var(--mb-1-25);
+}
+
+.footer__subtitle {
+  margin-bottom: var(--mb-1);
+}
+
+.footer__item {
+  margin-bottom: var(--mb-0-75);
+}
+
+.footer__link {
+  color: var(--text-color);
+}
+
+.footer__link:hover {
+  color: var(--title-color);
+}
+
+.footer__rights {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+  text-align: center;
+}
+
+.footer__copy, .footer__terms-link {
+  font-size: var(--small-font-size);
+  color: var(--text-color-light);
+}
+
+.footer__terms {
+  display: flex;
+  column-gap: 1.5rem;
+  justify-content: center;
+}
+
+.footer__terms-link:hover {
+  color: var(--text-color);
+}
+
+/*========== SCROLL UP ==========*/
+.scrollup {
+  position: fixed;
+  right: 1rem;
+  bottom: -20%;
+  background-color: var(--first-color);
+  padding: .5rem;
+  display: flex;
+  opacity: .9;
+  z-index: var(--z-tooltip);
+  transition: .4s;
+}
+
+.scrollup:hover {
+  background-color: var(--first-color-alt);
+  opacity: 1;
+}
+
+.scrollup__icon {
+  color: var(--white-color);
+  font-size: 1.2rem;
+}
+
+/* Show scroll */
+.show-scroll {
+  bottom: 5rem;
+}
+
+/*=============== SCROLL BAR ===============*/
+::-webkit-scrollbar {
+  width: .60rem;
+  background-color: var(--scroll-bar-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-thumb-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-color-light);
+}
+
+/*=============== MEDIA QUERIES ===============*/
+/* For small devices */
+@media screen and (max-width: 340px) {
+  .place__container {
+    grid-template-columns: max-content;
+    justify-content: center;
+  }
+  .experience__content {
+    padding: 0;
+  }
+  .experience__overlay:nth-child(1) {
+    width: 190px;
+  }
+  .experience__overlay:nth-child(2) {
+    width: 80px;
+  }
+  .home__info {
+    width: 190px;
+    padding: 1rem;
+  }
+  .experience__img,
+  .video__container {
+    padding: 0;
+  }
+}
+
+/* For medium devices */
+@media screen and (min-width: 568px) {
+  .video__container {
+    display: grid;
+    grid-template-columns: .6fr;
+    justify-content: center;
+  }
+  .place__container {
+    grid-template-columns: repeat(3, max-content);
+  }
+  .subscribe__form {
+    width: 470px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  body {
+    margin: 0;
+  }
+  .nav {
+    height: calc(var(--header-height) + 1.5rem);
+  }
+  .nav__link {
+    color: var(--white-color);
+    text-transform: initial;
+  }
+  .nav__link:hover {
+    color: var(--white-color);
+  }
+  .nav__dark {
+    position: initial;
+  }
+  .nav__menu {
+    display: flex;
+    column-gap: 1rem;
+  }
+  .nav__list {
+    flex-direction: row;
+    column-gap: 4rem;
+  }
+  .nav__toggle, .nav__close {
+    display: none;
+  }
+  .change-theme-name {
+    display: none;
+  }
+  .change-theme {
+    color: var(--white-color);
+  }
+  .active-link::before {
+    background-color: var(--white-color);
+  }
+  .scroll-header .nav__link {
+    color: var(--text-color);
+  }
+  .scroll-header .active-link {
+    color: var(--title-color);
+  }
+  .scroll-header .active-link::before {
+    background-color: var(--title-color);
+  }
+  .scroll-header .change-theme {
+    color: var(--text-color);
+  }
+  .section {
+    padding: 7rem 0 2rem;
+  }
+  .home__container {
+    height: 100vh;
+    grid-template-rows: 1.8fr .5fr;
+  }
+  .home__data {
+    align-self: flex-end;
+  }
+  .home__social {
+    flex-direction: row;
+    align-self: flex-end;
+    margin-bottom: 3rem;
+    column-gap: 2.5rem;
+  }
+  .home__info {
+    bottom: 3rem;
+  }
+  .about__container {
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+  }
+  .about__data, .about__title {
+    text-align: initial;
+  }
+  .about__title {
+    margin-bottom: var(--mb-1-5);
+  }
+  .about__description {
+    margin-bottom: var(--mb-2);
+  }
+  .discover__container {
+    width: 610px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .discover__container,
+  .place__container {
+    padding-top: 2rem;
+  }
+  .experience__overlay:nth-child(1) {
+    width: 363px;
+    margin-right: 4rem;
+  }
+  .experience__overlay:nth-child(2) {
+    width: 160px;
+  }
+  .subscribe__bg {
+    background: none;
+    padding: 0;
+  }
+  .subscribe__container {
+    background-color: var(--first-color-second);
+    padding: 3.5rem 0;
+  }
+  .subscribe__input {
+    padding: 0 .5rem;
+  }
+  .footer__rights {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* For large devices */
+@media screen and (min-width: 1024px) {
+  .container {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .home__container {
+    grid-template-rows: 2fr .5fr;
+  }
+  .home__info {
+    width: 328px;
+    grid-template-columns: 1fr 2fr;
+    column-gap: 2rem;
+  }
+  .home__info-title {
+    font-size: var(--normal-font-size);
+  }
+  .home__info-img {
+    width: 240px;
+  }
+  .about__img-one {
+    width: 230px;
+  }
+  .about__img-two {
+    width: 290px;
+  }
+  .discover__card {
+    width: 237px;
+  }
+  .discover__container {
+    width: 700px;
+  }
+  .discover__data {
+    left: 1.5rem;
+    bottom: 2rem;
+  }
+  .discover__title {
+    font-size: var(--h2-font-size);
+  }
+  .experience__content {
+    margin: var(--mb-1) 0;
+    column-gap: 3.5rem;
+  }
+  .experience__overlay:nth-child(1) {
+    width: 463px;
+    margin-right: 7rem;
+  }
+  .experience__overlay:nth-child(2) {
+    width: 220px;
+    top: 3rem;
+  }
+  .video__container {
+    grid-template-columns: .7fr;
+  }
+  .video__description {
+    padding: 0 8rem;
+  }
+  .place__container {
+    gap: 3rem 2rem;
+  }
+  .place__card, .place__img {
+    height: 263px;
+  }
+  .footer__content {
+    justify-items: center;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+/* For tall screens on mobiles y desktop*/
+@media screen and (min-height: 721px) {
+  body {
+    margin: 0;
+  }
+  .home__container, .home__img {
+    height: 640px;
+  }
+}
+
+
+
+
+</style>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Travelo</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <link rel="manifest" href="site.webmanifest"> -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.png' %} ">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gijgo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slicknav.css' %}">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- <link rel="stylesheet" href="css/responsive.css"> -->
+</head>
+<body>
+
+
+<!-- slider_area_start -->
+<div class="slider_area">
+    <div class="slider_active owl-carousel">
+        <div class="single_slider  d-flex align-items-center slider_bg_3 overlay">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-12 col-md-12">
+                        <div class="slider_text text-center">
+                            <h3>Switzerland</h3>
+                            <p></p>
+                            <a href="destination_details/Switzerland" class="boxed-btn3">Explore Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="single_slider  d-flex align-items-center slider_bg_2 overlay">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-12 col-md-12">
+                        <div class="slider_text text-center">
+                            <h3>Australia</h3>
+                            <p></p>
+                            <a href="destination_list/Australia" class="boxed-btn3">Explore Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="single_slider  d-flex align-items-center slider_bg_1 overlay">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-12 col-md-12">
+                        <div class="slider_text text-center">
+                            <h3>Italy</h3>
+                            <p></p>
+                            <a href="#" class="boxed-btn3">Explore Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- slider_area_end -->
+
+
+<!-- where_togo_area_start  -->
+<div class="where_togo_area">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-3">
+                <div class="form_area">
+                    <h3>Where you want to go?</h3>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="search_wrap">
+                    <form class="search_form" action="search" method="POST">
+                        {%csrf_token%}
+                        <div class="input_field">
+                            <input type="text" placeholder="Where to go?" name="place">
+                        </div>
+
+                        <div class="search_btn">
+                            <input class="boxed-btn4 " type="submit"></input>
+                        </div>
+                        <div class="form_area">
+                            {% for message in messages %}
+                            <h3>{{ message }}</h3>
+                            {% endfor %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- where_togo_area_end  -->
+<style>
+    .discover__card{
+    column-gap:30px
+    }
+
+</style>
+<!----------------discover--------->
+<div class="recent_trip_area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="section_title text-center mb_70">
+                    <h3>Discover More Places ...!</h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="single_trip">
+                    <div class="thumb">
+                        <img src="{% static 'img/trip/bal.jpg' %}" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="date">
+                            <span>24 hours</span>
+                        </div>
+                        <a href="{%url 'des'%}">
+                            <h3>Bali is one of the most evocative places to visit </h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single_trip">
+                    <div class="thumb">
+                        <img src="{% static 'img/trip/mal.jpg' %}" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="date">
+                            <span>Oct 12, 2019</span>
+                        </div>
+                        <a href="{%url 'des1'%}">
+                            <h3>The Maldives is among the top tourist destination.</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single_trip">
+                    <div class="thumb">
+                        <img src="{% static 'img/trip/maly.jpg' %}" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="date">
+                            <span>Oct 12, 2019</span>
+                        </div>
+                        <a href="{%url 'des2'%}">
+                            <h3>A pineapple a day keeps the worries away-topical island</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single_trip">
+                    <div class="thumb">
+                        <img src="{% static 'img/trip/mal.jpg' %}" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="date">
+                            <span>Oct 12, 2019</span>
+                        </div>
+                        <a href="{%url 'des1'%}">
+                            <h3>The Maldives is among the top tourist destination.</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single_trip">
+                    <div class="thumb">
+                        <img src="{% static 'img/trip/haw.jpg'%}" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="date">
+                            <span>Oct 12, 2019</span>
+                        </div>
+                        <a href="{%url 'des3'%}">
+                            <h3>Hawaii is not a state of mind, but a state of grace.</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single_trip">
+                    <div class="thumb">
+                        <img src="{% static 'img/trip/sig.jpg'%}" alt="">
+                    </div>
+                    <div class="info">
+                        <div class="date">
+                            <span>Oct 12, 2019</span>
+                        </div>
+                        <a href="{%url 'des4'%}">
+                            <h3>There's nowhere that looks like Singapore.</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- newletter_area_start  -->
+<div class="newletter_area overlay">
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-10">
+                <div class="row align-items-center">
+                    <div class="col-lg-5">
+                        <div class="newsletter_text">
+                            <h4>Login Our WEBSITE</h4>
+                            <p>Login to our website to get offers and about new places to discover.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="mail_form">
+                            <div class="row no-gutters">
+                                <div class="col-lg-9 col-md-8">
+                                    <div class="newsletter_field">
+                                        <input type="email" placeholder="Your mail">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-4">
+                                    <div class="newsletter_btn">
+                                        <a href="{%url 'in'%}">
+                                        <button class="boxed-btn4 " type="submit">Login</button>
+                                            </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- newletter_area_end  -->
+<section class="experience section">
+    <h2 class="section__title">With Our Experience <br> We Will Serve You</h2>
+
+    <div class="experience__container container grid">
+        <div class="experience__content grid">
+            <div class="experience__data">
+                <h2 class="experience__number">20</h2>
+                <span class="experience__description">Year <br> Experience</span>
+            </div>
+
+            <div class="experience__data">
+                <h2 class="experience__number">75</h2>
+                <span class="experience__description">Complete <br> tours</span>
+            </div>
+
+            <div class="experience__data">
+                <h2 class="experience__number">650+</h2>
+                <span class="experience__description">Tourist <br> Destination</span>
+            </div>
+        </div>
+
+        <div class="experience__img grid">
+            <div class="experience__overlay">
+                <img src="{%static 'img/trip/bhali.jpg'%}" alt="" class="experience__img-one">
+            </div>
+
+            <div class="experience__overlay">
+                <img src="assets/img/experience2.jpg" alt="" class="experience__img-two">
+            </div>
+        </div>
+    </div>
+</section>
+<!--==================== PLACES ====================-->
+<section class="place section" id="place">
+    <h2 class="section__title">Choose Your Place</h2>
+
+    <div class="place__container container grid">
+        <!--==================== PLACES CARD 1 ====================-->
+        <div class="place__card">
+            <img src="{%static 'img/trip/place1.jpg'%}" alt="" class="place__img">
+
+            <div class="place__content">
+                            <span class="place__rating">
+                                <i class="ri-star-line place__rating-icon"></i>
+                                <span class="place__rating-number">4,8</span>
+                            </span>
+
+                <div class="place__data">
+                    <h3 class="place__title">Bali</h3>
+                    <span class="place__subtitle">Indonesia</span>
+                    <span class="place__price">$2499</span>
+                </div>
+            </div>
+
+            <button class="button button--flex place__button">
+                <i class="ri-arrow-right-line"></i>
+            </button>
+        </div>
+
+        <!--==================== PLACES CARD 2 ====================-->
+        <div class="place__card">
+            <img src="{%static 'img/trip/place2.jpg'%}" alt="" class="place__img">
+
+            <div class="place__content">
+                            <span class="place__rating">
+                                <i class="ri-star-line place__rating-icon"></i>
+                                <span class="place__rating-number">5,0</span>
+                            </span>
+
+                <div class="place__data">
+                    <h3 class="place__title">Bora Bora</h3>
+                    <span class="place__subtitle">Polinesia</span>
+                    <span class="place__price">$1599</span>
+                </div>
+            </div>
+
+            <button class="button button--flex place__button">
+                <i class="ri-arrow-right-line"></i>
+            </button>
+        </div>
+
+        <!--==================== PLACES CARD 3 ====================-->
+        <div class="place__card">
+            <img src="{%static 'img/trip/place3.jpg'%}" alt="" class="place__img">
+
+            <div class="place__content">
+                            <span class="place__rating">
+                                <i class="ri-star-line place__rating-icon"></i>
+                                <span class="place__rating-number">4,9</span>
+                            </span>
+
+                <div class="place__data">
+                    <h3 class="place__title">Hawaii</h3>
+                    <span class="place__subtitle">EE.UU</span>
+                    <span class="place__price">$3499</span>
+                </div>
+            </div>
+
+            <button class="button button--flex place__button">
+                <i class="ri-arrow-right-line"></i>
+            </button>
+        </div>
+
+        <!--==================== PLACES CARD 4 ====================-->
+        <div class="place__card">
+            <img src="{%static 'img/trip/place4.jpg'%}" alt="" class="place__img">
+
+            <div class="place__content">
+                            <span class="place__rating">
+                                <i class="ri-star-line place__rating-icon"></i>
+                                <span class="place__rating-number">4,8</span>
+                            </span>
+
+                <div class="place__data">
+                    <h3 class="place__title">Whitehaven</h3>
+                    <span class="place__subtitle">Australia</span>
+                    <span class="place__price">$2499</span>
+                </div>
+            </div>
+
+            <button class="button button--flex place__button">
+                <i class="ri-arrow-right-line"></i>
+            </button>
+        </div>
+
+        <!--==================== PLACES CARD 5 ====================-->
+        <div class="place__card">
+            <img src="{%static 'img/trip/place5.jpg'%}" alt="" class="place__img">
+
+            <div class="place__content">
+                            <span class="place__rating">
+                                <i class="ri-star-line place__rating-icon"></i>
+                                <span class="place__rating-number">4,8</span>
+                            </span>
+
+                <div class="place__data">
+                    <h3 class="place__title">Hvar</h3>
+                    <span class="place__subtitle">Croacia</span>
+                    <span class="place__price">$1999</span>
+                </div>
+            </div>
+
+            <button class="button button--flex place__button">
+                <i class="ri-arrow-right-line"></i>
+            </button>
+        </div>
+    </div>
+</section>
+<style>
+    .place__card{
+    bottom:50px;
+    }
+
+</style>
+<div class="popular_places_area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="section_title text-center mb_70">
+
+            </div>
+        </div>
+        <div class="row">
+            {% for dest in dest1 %}
+            <div class="col-lg-4 col-md-6">
+                <div class="single_place">
+                    <div class="thumb">
+                        <img src="{{dest.img1.url}}" alt="">
+                        <a href='destination_details/{{dest.dest_name}}' class="prise">₹{{dest.price}}</a>
+                    </div>
+                    <div class="place_info">
+                        <a href='destination_details/{{dest.dest_name}}'>
+                            <h3>{{dest.dest_name}}</h3>
+                        </a>
+                        <p>{{dest.country}}</p>
+                        <div class="rating_days d-flex justify-content-between">
+                                <span class="d-flex justify-content-center align-items-center">
+                                     <i class="fa fa-star"></i>
+                                     <i class="fa fa-star"></i>
+                                     <i class="fa fa-star"></i>
+                                     <i class="fa fa-star"></i>
+                                     <i class="fa fa-star"></i>
+                                     <a href="#">(20 Review)</a>
+                                </span>
+                            <div class="days">
+                                <i class="fa fa-clock-o"></i>
+                                <a href='destination_details/{{dest.dest_name}}'>{{dest.days}} Days</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="more_place_btn text-center">
+                    <a class="boxed-btn4" href="#"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="popular_places_area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="section_title text-center mb_70">
+
+            </div>
+        </div>
+        <div class="row">
+            {% for dest in dest1 %}
+            <div class="col-lg-4 col-md-6">
+                <div class="single_place">
+                    <div class="thumb">
+                        <img src="{{dest.img1.url}}" alt="">
+                        <a href='destination_details/{{dest.dest_name}}' class="prise">₹{{dest.price}}</a>
+                    </div>
+                    <div class="place_info">
+                        <a href='destination_details/{{dest.dest_name}}'>
+                            <h3>{{dest.dest_name}}</h3>
+                        </a>
+                        <p>{{dest.country}}</p>
+                        <div class="rating_days d-flex justify-content-between">
+                                <span class="d-flex justify-content-center align-items-center">
+                                     <i class="fa fa-star"></i>
+                                     <i class="fa fa-star"></i>
+                                     <i class="fa fa-star"></i>
+                                     <i class="fa fa-star"></i>
+                                     <i class="fa fa-star"></i>
+                                     <a href="#">(20 Review)</a>
+                                </span>
+                            <div class="days">
+                                <i class="fa fa-clock-o"></i>
+                                <a href='destination_details/{{dest.dest_name}}'>{{dest.days}} Days</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="more_place_btn text-center">
+                    <a class="boxed-btn4" href="#"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="video_area video_bg overlay">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="video_wrap text-center">
+                    <h3>Let us take you away</h3><br><br><br><br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="travel_variation_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="single_travel text-center">
+                    <div class="icon">
+                        <img src="{% static 'img/svg_icon/1.svg' %}" alt="">
+                    </div>
+                    <h3>Comfortable Journey</h3>
+                    <p>A wonderful serenity has taken to the possession of my entire soul.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single_travel text-center">
+                    <div class="icon">
+                        <img src="{% static 'img/svg_icon/2.svg' %}" alt="">
+                    </div>
+                    <h3>Luxuries Hotel</h3>
+                    <p>A wonderful serenity has taken to the possession of my entire soul.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single_travel text-center">
+                    <div class="icon">
+                        <img src="{% static 'img/svg_icon/3.svg' %}" alt="">
+                    </div>
+                    <h3>Travel Guide</h3>
+                    <p>A wonderful serenity has taken to the possession of my entire soul.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- testimonial_area  -->
+<div class="testimonial_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="testmonial_active owl-carousel">
+
+
+                    <div class="single_carousel">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="single_testmonial text-center">
+                                    <div class="author_thumb">
+                                        <img src="{% static 'img/testmonial/author6.png' %}" alt="">
+                                    </div>
+                                    <p>"The gladdest moment in human life is a departure into unknown lands.</p>
+                                    <div class="testmonial_author">
+                                        <h3>- Alvero morte</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single_carousel">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="single_testmonial text-center">
+                                    <div class="author_thumb">
+                                        <img src="{% static 'img/testmonial/author.png' %}" alt="">
+                                    </div>
+                                    <p>"The gladdest moment in human life is a departure into unknown lands. </p>
+                                    <div class="testmonial_author">
+                                        <h3>- Alvaro M.</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single_carousel">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="single_testmonial text-center">
+                                    <div class="author_thumb">
+                                        <img src="{% static 'img/testmonial/author.png' %}" alt="">
+                                    </div>
+                                    <p>"Travel makes one modest. You see what a tiny place you occupy in the world.</p>
+                                    <div class="testmonial_author">
+                                        <h3>- Shrey B.</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /testimonial_area  -->
+
+
+<footer class="footer">
+    <div class="footer_top">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-md-6 col-lg-4 ">
+                    <div class="footer_widget">
+                        <div class="footer_logo">
+                            <a href="#">
+                                <img src="{% static 'img/footer_logo.png' %}" alt="">
+                            </a>
+                        </div>
+                        <p>Kishan samosa<br> lane New York-1782 <br>
+                            <a href="#">+91 99999 88888</a> <br>
+                            <a href="#">dharmilvaghasia3675@gmail.com</a>
+                        </p>
+                        <div class="socail_links">
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <i class="ti-facebook"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="ti-twitter-alt"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-instagram"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-pinterest"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.youtube.com/user/javaboynavin">
+                                        <i class="fa fa-youtube-play"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-6 col-lg-2">
+                    <div class="footer_widget">
+                        <h3 class="footer_title">
+                            Company
+                        </h3>
+                        <ul class="links">
+                            <li><a href="#">Pricing</a></li>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#"> Gallery</a></li>
+                            <li><a href="#"> Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-lg-3">
+                    <div class="footer_widget">
+                        <h3 class="footer_title">
+                            Popular destination
+                        </h3>
+                        <ul class="links double_links">
+                            <li><a href="#">Indonesia</a></li>
+                            <li><a href="#">America</a></li>
+                            <li><a href="#">India</a></li>
+                            <li><a href="#">Switzerland</a></li>
+                            <li><a href="#">Italy</a></li>
+                            <li><a href="#">Canada</a></li>
+                            <li><a href="#">Franch</a></li>
+                            <li><a href="#">England</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 col-lg-3">
+                    <div class="footer_widget">
+                        <h3 class="footer_title">
+                            Instagram
+                        </h3>
+                        <div class="instagram_feed">
+                            <div class="single_insta">
+                                <a href="#">
+                                    <img src="{% static 'img/instagram/1.png' %}" alt="">
+                                </a>
+                            </div>
+                            <div class="single_insta">
+                                <a href="#">
+                                    <img src="{% static 'img/instagram/2.png' %}" alt="">
+                                </a>
+                            </div>
+                            <div class="single_insta">
+                                <a href="#">
+                                    <img src="{% static 'img/instagram/3.png' %}" alt="">
+                                </a>
+                            </div>
+                            <div class="single_insta">
+                                <a href="#">
+                                    <img src="{% static 'img/instagram/4.png' %}" alt="">
+                                </a>
+                            </div>
+                            <div class="single_insta">
+                                <a href="#">
+                                    <img src="{% static 'img/instagram/5.png' %}" alt="">
+                                </a>
+                            </div>
+                            <div class="single_insta">
+                                <a href="#">
+                                    <img src="{% static 'img/instagram/6.png' %}" alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copy-right_text">
+        <div class="container">
+            <div class="footer_border"></div>
+            <div class="row">
+                <div class="col-xl-12">
+                    <p class="copy_right text-center">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>
+                                document.write(new Date().getFullYear());
+
+
+
+
+                        </script>
+                        All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                                                            Acess="true"></i> by <a
+                            href="https://colorlib.com" target="_blank">Colorlib</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Modal -->
+<div class="modal fade custom_search_pop" id="exampleModalCenter" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="serch_form">
+                <input type="text" placeholder="Search">
+                <button type="submit">search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- link that opens popup -->
+<!--
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://static.codepen.io/assets/common/stopExecutionOnTimeout-de7e2ef6bfefd24b79a3f68b414b87b8db5b08439cac3f1012092b2290c719cd.js"></script>
+
+<script src=" https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"> </script> -->
+<!-- JS here -->
+<script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
+<script src="{% static 'js/vendor/jquery-1.12.4.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'js/ajax-form.js' %}"></script>
+<script src="{% static 'js/waypoints.min.js' %}"></script>
+<script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+<script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'js/scrollIt.js' %}"></script>
+<script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
+<script src="{% static 'js/wow.min.js' %}"></script>
+<script src="{% static 'js/nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.min.js' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'js/plugins.js' %}"></script>
+<script src="{% static 'js/gijgo.min.js' %}"></script>
+<script src="{% static 'js/slick.min.js' %}"></script>
+
+
+<!--contact js-->
+<script src="{% static 'js/contact.js' %}"></script>
+<script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
+<script src="{% static 'js/jquery.form.js' %}"></script>
+<script src="{% static 'js/jquery.validate.min.js' %}"></script>
+<script src="{% static 'js/mail-script.js' %}"></script>
+
+
+<script src="{% static 'js/main.js' %}"></script>
+<script>
+        $('#datepicker').datepicker({
+            iconsLibrary: 'fontawesome',
+            icons: {
+                rightIcon: '<span class="fa fa-caret-down"></span>'
+            }
+        });
+
+
+
+
+</script>
+    </div>
+</body>
+
+</html>
+{% endblock %}
